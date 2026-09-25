@@ -1,0 +1,61 @@
+# DRAFT starter configuration for oil palm detection.
+# This is scaffolding based on config/palm_tree_config.yaml, not a finished config.
+# Everything marked TODO needs to be confirmed once real annotations/imagery paths exist.
+
+# Dataset configuration
+dataset:
+  name: "oil_palm"
+  # TODO: confirm which site should be train vs test once annotations exist for either.
+  # LP75 and Macaque Trail are two different survey sites, not two captures of one site,
+  # so this train/test split is a provisional guess, not a confirmed decision.
+  train_capture: "LP75"
+  test_captures: ["Macaque_Trail"]
+  # TODO: point this at the real folder on the GPU machine, structured as
+  #   <base_path>/LP75/<band file>
+  #   <base_path>/Macaque_Trail/<band file>
+  base_path: "./oil_palm"
+
+# Model configuration
+model:
+  svm_model_dir: "oil_palm_trained_models_v1"
+  lda_model_path: "lda_v1_oil_palm_dinov2_rgb.pickle"
+  dinov2_model_name: "facebook/dinov2-base"
+
+# Data processing configuration
+data:
+  bounds_df_path: "oil_palm_bounds_embeddings_lda_v1_dinov2_rgb.pickle"
+  random_px_df_path: "oil_palm_random_embeddings_lda_v1_dinov2_rgb.pickle"
+  # Matches the actual filenames confirmed from the .aux.xml sidecars (3-band, 8-bit RGB).
+  band_filenames_tif: ["LP75_Drone_Shot.tif"]
+  # TODO: crop_size (in pixels) should match your palm crown diameter at your drone's
+  # ground sample distance (GSD). The default 64px was tuned for Macaranga/Casuarina
+  # imagery at a different GSD - recompute once flight altitude/camera specs are known.
+  crop_size: 64
+  resize_size: 224
+
+# Species configuration
+species:
+  # TODO: confirm exact class name(s) once annotations exist.
+  species_list: ["Oil Palm"]
+  use_biased_svm: true
+  sensitivity_target: 0.75
+
+# Training hyperparameters
+training:
+  n_samples_train: 75000
+  n_samples_test: 25000
+
+# Output configuration
+output:
+  output_json: "label_studio_format_bb_oil_palm_75.json"
+  output_geojson: "label_studio_format_bb_oil_palm_75.geojson"
+  output_image: "oil_palm_predictions_75.png"
+
+# Label Studio configuration
+# TODO: fill in once a Label Studio instance is set up for annotation - do not reuse
+# the credential that was previously hardcoded in config/schema.py.
+label_studio:
+  url: ""
+  api_key: ""
+  task_first_run: 0
+  task_m3m: 0

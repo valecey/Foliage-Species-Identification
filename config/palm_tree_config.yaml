@@ -1,0 +1,43 @@
+# Example configuration for Palm Tree detection dataset
+# Override specific values for palm tree species detection
+
+# Dataset configuration
+dataset:
+  name: "palm_tree"
+  train_capture: "first_run"
+  test_captures: ["m3m"]
+  base_path: "./palm_tree"
+
+# Model configuration
+model:
+  svm_model_dir: "palm_tree_trained_models_v2"
+  lda_model_path: "lda_v2_palm_tree_dinov2_rgb.pickle"
+  dinov2_model_name: "facebook/dinov2-base"
+
+# Data processing configuration
+data:
+  bounds_df_path: "palm_tree_bounds_embeddings_lda_v2_dinov2_rgb.pickle"
+  random_px_df_path: "palm_tree_random_embeddings_lda_v2_dinov2_rgb.pickle"
+
+# Species configuration
+species:
+  species_list: ["Palm Tree", "Coconut Palm", "Date Palm"]
+  use_biased_svm: true
+  sensitivity_target: 0.75
+
+# Training hyperparameters
+training:
+  n_samples_train: 75000
+  n_samples_test: 25000
+  sensitivity_target: 0.75
+
+# Output configuration
+output:
+  output_json: "label_studio_format_bb_palm_tree_75.json"
+  output_geojson: "label_studio_format_bb_palm_tree_75.geojson"
+  output_image: "palm_tree_predictions_75.png"
+
+# Label Studio configuration
+label_studio:
+  task_first_run: 90
+  task_m3m: 91

@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Model artifacts and generated data
+*.pickle
+*.pt
+*.pth
+crops/
+*_trained_models*/
+
+# Pipeline outputs
+*.png
+*.json
+*.geojson
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

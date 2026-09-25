@@ -1,10 +1,12 @@
-# DRAFT starter configuration for oil palm detection.
-# This is scaffolding based on config/palm_tree_config.yaml, not a finished config.
-# Everything marked TODO needs to be confirmed once real annotations/imagery paths exist.
+# DRAFT starter configuration for generic palm detection.
+# Goal: a single binary "palm crown vs. not" detector using generic morphological
+# features, not discrimination between named palm species.
+# This is scaffolding, not a finished config - everything marked TODO needs to be
+# confirmed once real annotations/imagery paths exist.
 
 # Dataset configuration
 dataset:
-  name: "oil_palm"
+  name: "palm"
   # TODO: confirm which site should be train vs test once annotations exist for either.
   # LP75 and Macaque Trail are two different survey sites, not two captures of one site,
   # so this train/test split is a provisional guess, not a confirmed decision.
@@ -13,30 +15,33 @@ dataset:
   # TODO: point this at the real folder on the GPU machine, structured as
   #   <base_path>/LP75/<band file>
   #   <base_path>/Macaque_Trail/<band file>
-  base_path: "./oil_palm"
+  base_path: "./palm"
 
 # Model configuration
 model:
-  svm_model_dir: "oil_palm_trained_models_v1"
-  lda_model_path: "lda_v1_oil_palm_dinov2_rgb.pickle"
+  svm_model_dir: "palm_trained_models_v1"
+  lda_model_path: "lda_v1_palm_dinov2_rgb.pickle"
   dinov2_model_name: "facebook/dinov2-base"
 
 # Data processing configuration
 data:
-  bounds_df_path: "oil_palm_bounds_embeddings_lda_v1_dinov2_rgb.pickle"
-  random_px_df_path: "oil_palm_random_embeddings_lda_v1_dinov2_rgb.pickle"
+  bounds_df_path: "palm_bounds_embeddings_lda_v1_dinov2_rgb.pickle"
+  random_px_df_path: "palm_random_embeddings_lda_v1_dinov2_rgb.pickle"
   # Matches the actual filenames confirmed from the .aux.xml sidecars (3-band, 8-bit RGB).
   band_filenames_tif: ["LP75_Drone_Shot.tif"]
-  # TODO: crop_size (in pixels) should match your palm crown diameter at your drone's
+  # TODO: crop_size (in pixels) should match typical palm crown diameter at your drone's
   # ground sample distance (GSD). The default 64px was tuned for Macaranga/Casuarina
   # imagery at a different GSD - recompute once flight altitude/camera specs are known.
   crop_size: 64
   resize_size: 224
 
 # Species configuration
+# Single generic class: annotate every palm crown as "Palm" regardless of species,
+# so the classifier learns palm-family morphology rather than one species' signature.
 species:
-  # TODO: confirm exact class name(s) once annotations exist.
-  species_list: ["Oil Palm"]
+  # TODO: confirm the exact label string you'll use when annotating in Label Studio -
+  # this must match that label exactly.
+  species_list: ["Palm"]
   use_biased_svm: true
   sensitivity_target: 0.75
 
@@ -47,9 +52,9 @@ training:
 
 # Output configuration
 output:
-  output_json: "label_studio_format_bb_oil_palm_75.json"
-  output_geojson: "label_studio_format_bb_oil_palm_75.geojson"
-  output_image: "oil_palm_predictions_75.png"
+  output_json: "label_studio_format_bb_palm_75.json"
+  output_geojson: "label_studio_format_bb_palm_75.geojson"
+  output_image: "palm_predictions_75.png"
 
 # Label Studio configuration
 # TODO: fill in once a Label Studio instance is set up for annotation - do not reuse

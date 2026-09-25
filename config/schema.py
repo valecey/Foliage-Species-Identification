@@ -149,7 +149,7 @@ class VisualizationConfig(BaseModel):
 class LabelStudioConfig(BaseModel):
     """Label Studio configuration."""
     url: str = "http://10.97.41.70:8080"
-    api_key: str = "cb440fd528040025b1c26dcaa7220d709f54dbb2"
+    api_key: str = ""
     task_first_run: int = 84
     task_m3m: int = 85
 

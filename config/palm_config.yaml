@@ -13,8 +13,13 @@ dataset:
   train_capture: "LP75"
   test_captures: ["Macaque_Trail"]
   # TODO: point this at the real folder on the GPU machine, structured as
-  #   <base_path>/LP75/<band file>
-  #   <base_path>/Macaque_Trail/<band file>
+  #   <base_path>/LP75/result.tif
+  #   <base_path>/Macaque_Trail/result.tif
+  # band_filenames_tif below is shared across BOTH folders (data/loader.py loads
+  # `ds_path / fname` using the same filename for train and test), so rename/copy
+  # your actual files to match inside each site's own subfolder - don't leave them
+  # as LP75_Drone_Shot.tif / Macaque_Trail_Drone_Shot.tif, those names differ per
+  # site and only one of them would ever be found.
   base_path: "./palm"
 
 # Model configuration
@@ -27,8 +32,9 @@ model:
 data:
   bounds_df_path: "palm_bounds_embeddings_lda_v1_dinov2_rgb.pickle"
   random_px_df_path: "palm_random_embeddings_lda_v1_dinov2_rgb.pickle"
-  # Matches the actual filenames confirmed from the .aux.xml sidecars (3-band, 8-bit RGB).
-  band_filenames_tif: ["LP75_Drone_Shot.tif"]
+  # Shared filename across both site folders - see base_path note above. Format
+  # (3-band, 8-bit RGB) confirmed from the .aux.xml sidecars.
+  band_filenames_tif: ["result.tif"]
   # TODO: crop_size (in pixels) should match typical palm crown diameter at your drone's
   # ground sample distance (GSD). The default 64px was tuned for Macaranga/Casuarina
   # imagery at a different GSD - recompute once flight altitude/camera specs are known.
